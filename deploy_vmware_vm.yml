@@ -1,0 +1,32 @@
+---
+
+- name: prepare the build
+  hosts: localhost
+  gather_facts: false
+  tasks:
+   - name: build inventory 
+     add_host:
+      name: "{{ vm_name }}"
+      ansible_host: "{{ vm_ip | default(omit) }}"
+      groups: new_vm
+
+- name: deploy vm on vmware
+  hosts: new_vm
+  gather_facts: false
+  roles:
+  - create_vmware_vm
+
+- name: perform post install configuration
+  hosts: new_vm
+  connection: winrm
+  vars:
+    ansible_winrm_server_cert_validation: ignore
+    ansible_winrm_transport: basic
+  roles:
+  - enable_rdp
+
+
+
+
+
+  

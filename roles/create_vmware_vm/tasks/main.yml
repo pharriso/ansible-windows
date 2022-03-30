@@ -1,0 +1,43 @@
+---
+
+- name: create vm from template
+  vmware_guest:
+    validate_certs: no
+    datacenter: demolab
+    state: poweredon
+    template: "{{ vmware_template }}"
+    name: "{{ inventory_hostname }}"
+    cluster: "{{ vmware_cluster }}"
+    folder: ansible_demo
+    wait_for_ip_address: true
+    hardware:
+      memory_mb: "{{ vmware_memory_mb }}"
+      num_cpus: "{{ vmware_num_cpus }}"
+      scsi: paravirtual
+    networks:
+      - name: infra
+        ip: "{{ vmware_ip }}"
+        netmask: 255.255.252.0
+        gateway: 10.50.0.254
+        type: static
+    customization:
+      domain: windows.demolab.local
+      dns_servers:
+        - 10.50.0.26
+      dns_suffix:
+        - demolab.local
+      joinworkgroup: WORKGROUP
+      autologon: true
+      autologoncount: 2
+      password: "{{ ansible_password }}"
+      runonce:
+      - powershell.exe -ExecutionPolicy Unrestricted -File C:\Windows\ansible\ConfigureRemotingForAnsible.ps1
+  delegate_to: localhost
+
+- name: wait for winrm port
+  wait_for:
+    host: "{{ inventory_hostname }}"
+    delay: 10
+    timeout: 1200
+    port: 5986
+  delegate_to: localhost

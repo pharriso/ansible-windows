@@ -1,0 +1,13 @@
+---
+
+- name: install ComputerManagementDsc DSC resource
+  win_psmodule:
+    name: ComputerManagementDsc
+    state: present
+
+- name: enable rdp
+  win_dsc:
+    resource_name: RemoteDesktopAdmin
+    Ensure: Present
+    IsSingleInstance: yes
+    UserAuthentication: Secure
