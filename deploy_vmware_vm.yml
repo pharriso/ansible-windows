@@ -7,7 +7,7 @@
    - name: build inventory 
      add_host:
       name: "{{ vm_name }}"
-      ansible_host: "{{ vm_ip | default(omit) }}"
+      ansible_host: "{{ vmware_ip | default(omit) }}"
       groups: new_vm
 
 - name: deploy vm on vmware
