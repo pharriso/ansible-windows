@@ -1,0 +1,62 @@
+---
+
+- name: create temp directory
+  win_file:
+    path: C:\Temp
+    state: directory
+
+- name: create directory for dotnet website
+  win_file:
+    path: C:\webapp
+    state: directory
+
+- name: copy app across
+  win_copy:
+    src: webapp-{{ version }}.zip
+    dest: C:\Temp\webapp-{{ version }}.zip
+
+- name: unzip file
+  win_unzip:
+    src: C:\Temp\webapp-{{ version }}.zip
+    dest: C:\webapp
+
+- name: install iis
+  win_feature:
+    name: Web-Server
+    state: present
+    include_sub_features: yes
+    include_management_tools: yes
+
+- name: remove default web site
+  win_iis_website:
+    name: "Default Web Site"
+    state: absent
+
+- name: download dotnet core runtime
+  win_get_url: 
+    url: https://download.visualstudio.microsoft.com/download/pr/a9bb6d52-5f3f-4f95-90c2-084c499e4e33/eba3019b555bb9327079a0b1142cc5b2/dotnet-hosting-2.2.6-win.exe
+    dest: C:\Temp
+
+- name: install dotnet core runtime
+  win_package:
+    path: C:\Temp\dotnet-hosting-2.2.6-win.exe
+    product_id: '{915ABC45-231C-44F0-ACEF-9E0840E036EA}'
+    state: present
+    arguments:
+      - /install
+      - /quiet
+
+- name: create iis website
+  win_iis_website:
+    name: webapp
+    state: started
+    port: 80
+    application_pool: webapp
+    physical_path: C:\webapp
+
+- name: manage webapp pool
+  win_iis_webapppool:
+    name: webapp
+    state: started
+    attributes:
+      managedRuntimeVersion: v4.0

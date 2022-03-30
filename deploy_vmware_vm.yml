@@ -25,6 +25,7 @@
   roles:
   - join_domain
   - enable_rdp
+  - iis_dotnet
 
 
 
