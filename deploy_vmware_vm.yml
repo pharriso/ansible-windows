@@ -23,6 +23,7 @@
     ansible_winrm_server_cert_validation: ignore
     ansible_winrm_transport: basic
   roles:
+  - join_domain
   - enable_rdp
 
 

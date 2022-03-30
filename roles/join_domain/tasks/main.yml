@@ -1,0 +1,12 @@
+- name: join domain
+  win_domain_membership:
+    dns_domain_name: windows.demolab.local
+    hostname: "{{ inventory_hostname.split('.')[0] }}"
+    domain_admin_user: administrator@windows.demolab.local
+    domain_admin_password: "{{ ansible_password }}"
+    domain_ou_path: "OU=Windows,OU=Servers,DC=windows,DC=demolab,DC=local"
+    state: domain
+  register: domain_state
+
+- ansible.windows.win_reboot:
+  when: domain_state.reboot_required
