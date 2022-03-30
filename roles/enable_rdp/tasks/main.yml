@@ -9,5 +9,5 @@
   win_dsc:
     resource_name: RemoteDesktopAdmin
     Ensure: Present
-    IsSingleInstance: yes
+    IsSingleInstance: Yes
     UserAuthentication: Secure
