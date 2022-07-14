@@ -24,6 +24,14 @@
     disk_number: 2
   when: data_disk_size != 0
 
+- name: format page disk
+  community.windows.win_format:
+    drive_letter: P
+    file_system: NTFS
+    new_label: Formatted
+    full: True
+  when: page_disk_size != 0
+
 - name: set pagefile
   community.windows.win_pagefile:
     drive: P
