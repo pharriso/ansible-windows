@@ -28,7 +28,7 @@
   community.windows.win_format:
     drive_letter: P
     file_system: NTFS
-    new_label: Formatted
+    new_label: Page
     full: True
   when: page_disk_size != 0
 
@@ -44,6 +44,6 @@
   community.windows.win_format:
     drive_letter: G
     file_system: NTFS
-    new_label: Formatted
+    new_label: Data
     full: True
   when: data_disk_size != 0
