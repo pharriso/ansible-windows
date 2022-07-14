@@ -24,6 +24,7 @@
     ansible_winrm_transport: basic
   roles:
   - join_domain
+  - configure_disks
   - enable_rdp
   - { role: iis_dotnet, when: "server_role == 'iis'" }
 

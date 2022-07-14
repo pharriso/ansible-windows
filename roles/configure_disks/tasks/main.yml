@@ -1,0 +1,31 @@
+---
+
+- name: partition page disk
+  community.windows.win_partition:
+    drive_letter: P
+    partition_size: "{{ data_disk_size }} GiB"
+    disk_number: 1
+  when: "{{ page_disk_size }} != 0"
+
+- name: partition data disk
+  community.windows.win_partition:
+    drive_letter: G
+    partition_size: "{{ data_disk_size }} GiB"
+    disk_number: 2
+  when: "{{ data_disk_size }} != 0"
+
+- name: set pagefile
+  community.windows.win_pagefile:
+    drive: p
+    initial_size: 1024
+    maximum_size: 4096
+    state: present
+  when: "{{ page_disk_size }} != 0"
+
+- name: format data disk
+  community.windows.win_format:
+    drive_letter: G
+    file_system: NTFS
+    new_label: Formatted
+    full: True
+  when: "{{ data_disk_size }} != 0"

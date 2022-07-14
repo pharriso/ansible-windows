@@ -34,6 +34,37 @@
       - powershell.exe -ExecutionPolicy Unrestricted -File C:\Windows\ansible\ConfigureRemotingForAnsible.ps1
   delegate_to: localhost
 
+- name: add page disk
+  vmware_guest_disk:
+    validate_certs: no
+    datacenter: demolab
+    name: "{{ inventory_hostname }}"
+    disk:
+    - size_gb: "{{ page_disk_size }}"
+      type: thin
+      autoselect_datastore: True
+      state: present
+      scsi_controller: 0
+      unit_number: 1
+  delegate_to: localhost
+  when: "{{ page_disk_size }} != 0"
+
+- name: add data disk
+  vmware_guest_disk:
+    validate_certs: no
+    datacenter: demolab
+    name: "{{ inventory_hostname }}"
+    disk:
+    - size_gb: "{{ data_disk_size }}"
+      type: thin
+      autoselect_datastore: True
+      state: present
+      scsi_controller: 0
+      unit_number: 2
+  delegate_to: localhost
+  when: "{{ data_disk_size }} != 0"
+
+
 - name: wait for winrm port
   wait_for:
     host: "{{ inventory_hostname }}"
