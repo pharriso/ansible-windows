@@ -26,7 +26,7 @@
 
 - name: set pagefile
   community.windows.win_pagefile:
-    drive: p
+    drive: P
     initial_size: 1024
     maximum_size: 1024
     state: present
