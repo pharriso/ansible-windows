@@ -3,14 +3,14 @@
 - name: partition page disk
   community.windows.win_partition:
     drive_letter: P
-    partition_size: "{{ data_disk_size }} GiB"
+    partition_size: -1
     disk_number: 1
   when: "{{ page_disk_size }} != 0"
 
 - name: partition data disk
   community.windows.win_partition:
     drive_letter: G
-    partition_size: "{{ data_disk_size }} GiB"
+    partition_size: -1
     disk_number: 2
   when: "{{ data_disk_size }} != 0"
 
@@ -18,7 +18,7 @@
   community.windows.win_pagefile:
     drive: p
     initial_size: 1024
-    maximum_size: 4096
+    maximum_size: 1024
     state: present
   when: "{{ page_disk_size }} != 0"
 
