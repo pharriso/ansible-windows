@@ -42,7 +42,7 @@
     disk:
     - size_gb: "{{ page_disk_size }}"
       type: thin
-      autoselect_datastore: True
+      datastore: "{{ vmware_cluster }}_internal"
       state: present
       scsi_controller: 0
       unit_number: 1
@@ -58,7 +58,7 @@
     disk:
     - size_gb: "{{ data_disk_size }}"
       type: thin
-      autoselect_datastore: True
+      datastore: "{{ vmware_cluster }}_internal"
       state: present
       scsi_controller: 0
       unit_number: 2
