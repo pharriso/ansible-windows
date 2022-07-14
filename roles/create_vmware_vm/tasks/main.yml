@@ -46,6 +46,7 @@
       state: present
       scsi_controller: 0
       unit_number: 1
+      controller_type: lsilogic
   delegate_to: localhost
   when: "{{ page_disk_size }} != 0"
 
@@ -61,6 +62,7 @@
       state: present
       scsi_controller: 0
       unit_number: 2
+      controller_type: lsilogic
   delegate_to: localhost
   when: "{{ data_disk_size }} != 0"
 
