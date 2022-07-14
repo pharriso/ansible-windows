@@ -1,0 +1,14 @@
+---
+
+- name: restart windows services
+  hosts: all
+  connection: winrm
+  vars:
+    ansible_winrm_server_cert_validation: ignore
+    ansible_winrm_transport: basic
+  tasks:
+  - name: restart windows services
+    win_service:
+      name: "{{ item }}"
+      state: restarted
+    loop: "{{ win_services }}"
