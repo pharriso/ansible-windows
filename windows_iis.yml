@@ -1,0 +1,39 @@
+---
+
+- name: deploy iis
+  hosts: all
+  connection: winrm
+  vars:
+    ansible_winrm_server_cert_validation: ignore
+    ansible_winrm_transport: basic
+  tasks:
+  - name: install Web-Server feature
+    win_feature:
+      name: Web-Server
+      state: present
+      include_sub_features: yes
+      include_management_tools: yes
+
+  - name: install Web-App-Dev feature
+    win_feature:
+      name: Web-App-Dev
+      state: present
+      include_sub_features: yes
+      include_management_tools: yes
+
+  - name: install Web-Windows-Auth feature
+    win_feature:
+      name: Web-Windows-Auth
+      state: present
+      include_sub_features: no
+      include_management_tools: no
+
+  - name: install web logging features
+    win_feature:
+      name:
+        - Web-Http-Logging
+        - Web-ODBC-Logging
+        - Web-Request-Monitor
+        - Web-Http-Tracing
+      include_sub_features: no
+      include_management_tools: no
