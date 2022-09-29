@@ -6,7 +6,55 @@
   vars:
     ansible_winrm_server_cert_validation: ignore
     ansible_winrm_transport: basic
+    iis_disks:
+    - disk_number: 1
+      disk_size: 10
+      drive_letter: F
+      partition_size: -1
+      file_system: NTFS
+      label: DATA
+    - disk_number: 2
+      disk_size: 10
+      drive_letter: E
+      partition_size: -1
+      file_system: NTFS
+      label: Logs
   tasks:
+  - name: add extra disks in vmware
+    vmware_guest_disk:
+      validate_certs: no
+      datacenter: demolab
+      name: "{{ inventory_hostname }}"
+      disk:
+      - size_gb: "{{ item.disk_size }}"
+        type: thin
+        state: present
+        scsi_controller: 0
+        unit_number: "{{ item.disk_number }}"
+        scsi_type: lsilogicsas
+    loop: "{{ iis_disks }}"
+    delegate_to: localhost
+
+  - name: initialise disks
+    community.windows.win_initialize_disk:
+      disk_number: "{{ item.disk_number }}"
+    loop: "{{ iis_disks }}"
+
+  - name: partition disks
+    community.windows.win_partition:
+      drive_letter: "{{ item.drive_letter }}"
+      partition_size: "{{ item.partition_size }}"
+      disk_number: "{{ item.disk_number }}"
+    loop: "{{ iis_disks }}"
+
+  - name: format disks
+    community.windows.win_format:
+      drive_letter: "{{ item.drive_letter }}"
+      file_system: "{{ item.file_system }}"
+      new_label: "{{ item.label }}"
+      full: True
+    loop: "{{ iis_disks }}"
+
   - name: install Web-Server feature
     win_feature:
       name: Web-Server
