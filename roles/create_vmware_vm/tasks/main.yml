@@ -28,7 +28,7 @@
         - demolab.local
       joinworkgroup: WORKGROUP
       autologon: true
-      autologoncount: 2
+      autologoncount: "{{ autologoncount }}"
       password: "{{ ansible_password }}"
       runonce:
       - powershell.exe -ExecutionPolicy Unrestricted -File C:\Windows\ansible\ConfigureRemotingForAnsible.ps1
