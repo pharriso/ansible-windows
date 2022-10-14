@@ -29,7 +29,7 @@
       joinworkgroup: WORKGROUP
       autologon: true
       autologoncount: "{{ autologoncount }}"
-      #password: "{{ ansible_password }}"
+      password: "{{ ansible_password }}"
       runonce:
       - powershell.exe -ExecutionPolicy Unrestricted -File C:\Windows\ansible\ConfigureRemotingForAnsible.ps1
   delegate_to: localhost
