@@ -13,6 +13,9 @@
         port: 80
         address: "{{ inventory_hostname }}"
       delegate_to: localhost
+
+    - pause:
+        seconds: 20
         
     - name: install updates
       ansible.windows.win_updates:
