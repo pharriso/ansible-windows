@@ -1,0 +1,36 @@
+---
+- hosts: all
+  serial: "{{ concurrent_hosts | default('100%') }}"
+  tasks:
+    - name: offline server in loadbalancer pool
+      bigip_pool_member:
+        provider:
+          server: "{{ f5_server }}"
+          server_port: "8443"
+          validate_certs: "no"
+        pool: "ansible_http_pool"
+        state: forced_offline
+        port: 80
+        address: "{{ inventory_hostname }}"
+      delegate_to: localhost
+        
+    - name: install updates
+      ansible.windows.win_updates:
+        category_names:
+        - DefinitionUpdates
+
+    - name: check webservice is up
+      win_uri:
+        url: http://{{ ansible_host }}
+
+    - name: add server to loadbalancer pool
+      bigip_pool_member:
+        provider:
+          server: "{{ f5_server }}"
+          server_port: "8443"
+          validate_certs: "no"
+        pool: "ansible_http_pool"
+        state: enabled
+        port: 80
+        address: "{{ inventory_hostname }}"
+      delegate_to: localhost
