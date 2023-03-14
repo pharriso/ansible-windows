@@ -20,6 +20,11 @@
       file_system: NTFS
       label: Logs
   tasks:
+  - debug:
+      var: ansible_facts
+
+  - pause:
+
   - name: add extra disks in vmware
     vmware_guest_disk:
       validate_certs: no
@@ -34,6 +39,7 @@
         scsi_type: lsilogicsas
     loop: "{{ iis_disks }}"
     delegate_to: localhost
+
 
   - name: initialise disks
     community.windows.win_initialize_disk:
