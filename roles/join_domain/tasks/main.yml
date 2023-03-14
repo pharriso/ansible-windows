@@ -4,7 +4,7 @@
     hostname: "{{ inventory_hostname.split('.')[0] }}"
     domain_admin_user: administrator@demolab.local
     domain_admin_password: "{{ ansible_password }}"
-    domain_ou_path: "OU=Windows,OU=Servers,DC=windows,DC=demolab,DC=local"
+    domain_ou_path: "OU=Windows,OU=Servers,DC=demolab,DC=local"
     state: domain
   register: domain_state
 
