@@ -1,0 +1,8 @@
+- name: perform post install configuration
+  hosts: new_vm
+  connection: winrm
+  vars:
+    ansible_winrm_server_cert_validation: ignore
+    ansible_winrm_transport: basic
+  roles:
+  - enable_rdp
