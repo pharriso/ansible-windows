@@ -4,6 +4,7 @@
   win_psmodule:
     name: ComputerManagementDsc
     state: present
+    accept_license: yes
 
 - name: enable rdp
   win_dsc:
