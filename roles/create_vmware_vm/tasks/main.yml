@@ -23,7 +23,7 @@
     customization:
       domain: windows.demolab.local
       dns_servers:
-        - 10.50.0.173
+        - "{{ dns_server }}"
       dns_suffix:
         - demolab.local
       joinworkgroup: WORKGROUP
